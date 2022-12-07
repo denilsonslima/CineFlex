@@ -1,20 +1,38 @@
 import styled from "styled-components"
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Loading from "./Loading";
 
-export default function TelaInicial() {
+export default function TelaInicial({setFilmeEscolhido}) {
+    const [imagem, setImagem] = useState(null)
+
+    useEffect(() => {
+        const url = "https://mock-api.driven.com.br/api/v8/cineflex/movies"
+        const promisse = axios.get(url)
+        promisse.then(e => setImagem(e.data))
+        promisse.catch(res => console.log(res))
+    }, [])
+
+    if (imagem === null) {
+        return (
+            <Loading />
+        )
+    }
+
     return (
         <Main>
             <div>
                 <h2>Selecione o filme</h2>
             </div>
             <ul>
-                <li><div></div></li>
-                <li><div></div></li>
-                <li><div></div></li>
-                <li><div></div></li>
-                <li><div></div></li>
-                <li><div></div></li>
-                <li><div></div></li>
-                <li><div></div></li>
+                {imagem.map(e =>
+                    <li
+                        key={e.id}
+                        onClick={() => setFilmeEscolhido(e)}
+                    >
+                        <img src={e.posterURL} alt={e.title} />
+                    </li>
+                )}
             </ul>
         </Main>
     )
@@ -38,6 +56,7 @@ const Main = styled.div`
         color: #293845;
     }
     & ul {
+        min-width: 300px;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
@@ -50,13 +69,9 @@ const Main = styled.div`
             box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
             border-radius: 3px;
             padding: 8px;
-            & div {
-                width: 129px;
+            & img {
+                max-width: 129px;
                 height: 193px;
-                background-image: url("https://capas-p.imagemfilmes.com.br/164717_000_p.jpg");
-                background-size: cover;
-                background-repeat: no-repeat;
-                background-position: center;
             }
         }
     }

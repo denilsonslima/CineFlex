@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export default function Header() {
+export default function NavBar() {
     return (
         <Nav>
             CineFlex
@@ -8,12 +8,11 @@ export default function Header() {
     )
 }
 
-
-const Nav = styled.div`  
+const Nav = styled.nav`
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
+    z-index: 2;
+    width: 100vw;
     height: 67px;
     font-family: 'Roboto';
     font-style: normal;
