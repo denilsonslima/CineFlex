@@ -1,13 +1,15 @@
 import styled from "styled-components"
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Loading from "./Loading";
+import Loading from "../components/Loading";
+import { Link, useParams } from "react-router-dom"
 
-export default function Horario({ filmeEscolhido }) {
+export default function Horario({ infoFilme, setInfoFilme }) {
     const [imagem, setImagem] = useState(null)
+    const { idFilme } = useParams()
 
     useEffect(() => {
-        const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${filmeEscolhido.id}/showtimes`
+        const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`
         const promisse = axios.get(url)
         promisse.then(e => setImagem(e.data.days))
         promisse.catch(res => console.log(res))
@@ -23,19 +25,27 @@ export default function Horario({ filmeEscolhido }) {
         <Main>
             <div className="horario">Selecione o horário</div>
             {imagem.map(e => (
-                <section key={e.id}>
+                <section key={e.id} >
                     <h3>{`${e.weekday} - ${e.date}`}</h3>
-                    <div className="hora">
-                        <button>14:00</button>
-                        <button>14:00</button>
+                    <div className="ha">
+                        {e.showtimes.map(a =>
+                            <Link className="hora" to={`/assentos/${a.id}`}>
+                                <button
+                                    key={a.id}
+                                    onClick={() => setInfoFilme({...infoFilme, dia: e.weekday, hora: a.name})}
+                                >
+                                    {a.name}
+                                </button>
+                            </Link>
+                        )}
                     </div>
                 </section>
             ))}
             <footer>
                 <div>
-                    <img src={filmeEscolhido.posterURL} alt="Imagem Filme" />
+                    <img src={infoFilme.url} alt="Imagem Filme" />
                 </div>
-                <h4>{filmeEscolhido.title}</h4>
+                <h4>{infoFilme.name}</h4>
             </footer>
         </Main>
     )
@@ -77,21 +87,22 @@ const Main = styled.div`
             color: #293845;
             margin-bottom: 22px;
         }
-
-        .hora {
+        .ha {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-        }
-
-        button {
-            width: 83px;
-            height: 43px;
-            background: #E8833A;
-            border-radius: 3px;
-            color: #fff;
-            border: none;
-        }
+            .hora {
+                text-decoration: none;
+                button {
+                    width: 83px;
+                    height: 43px;
+                    background: #E8833A;
+                    border-radius: 3px;
+                    color: #fff;
+                    border: none;
+                }
+            }
+        }  
     }
 
     footer {

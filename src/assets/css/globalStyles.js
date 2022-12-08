@@ -51,6 +51,13 @@ const GlobalStyle = createGlobalStyle`
     * {
         box-sizing: border-box;
     }
+
+    .App {
+        max-width: 100vw;
+        height: 100vh;
+        padding-top: 67px;
+        margin: 0 auto;
+    }
 `
 
 export default GlobalStyle

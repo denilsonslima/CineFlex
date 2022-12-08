@@ -1,13 +1,14 @@
 import styled from "styled-components"
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Loading from "./Loading";
+import Loading from "../components/Loading";
+import { Link, useParams } from "react-router-dom";
 
-export default function TelaInicial({setFilmeEscolhido}) {
+export default function TelaInicial({setInfoFilme}) {
     const [imagem, setImagem] = useState(null)
 
     useEffect(() => {
-        const url = "https://mock-api.driven.com.br/api/v8/cineflex/movies"
+        const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies`
         const promisse = axios.get(url)
         promisse.then(e => setImagem(e.data))
         promisse.catch(res => console.log(res))
@@ -26,12 +27,16 @@ export default function TelaInicial({setFilmeEscolhido}) {
             </div>
             <ul>
                 {imagem.map(e =>
-                    <li
+                    <Link
                         key={e.id}
-                        onClick={() => setFilmeEscolhido(e)}
+                        to={`/sessoes/${e.id}`}
+                        onClick={() => setInfoFilme({name: e.title, url: e.posterURL})}
                     >
-                        <img src={e.posterURL} alt={e.title} />
-                    </li>
+                        <li>
+                            <img src={e.posterURL} alt={e.title} />
+                        </li>
+                    </Link>
+
                 )}
             </ul>
         </Main>
@@ -55,6 +60,7 @@ const Main = styled.div`
         letter-spacing: 0.04em;
         color: #293845;
     }
+    
     & ul {
         min-width: 300px;
         display: flex;
