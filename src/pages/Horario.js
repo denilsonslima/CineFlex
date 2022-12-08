@@ -29,10 +29,9 @@ export default function Horario({ infoFilme, setInfoFilme }) {
                     <h3>{`${e.weekday} - ${e.date}`}</h3>
                     <div className="ha">
                         {e.showtimes.map(a =>
-                            <Link className="hora" to={`/assentos/${a.id}`}>
+                            <Link key={a.id} className="hora" to={`/assentos/${a.id}`}>
                                 <button
-                                    key={a.id}
-                                    onClick={() => setInfoFilme({...infoFilme, dia: e.weekday, hora: a.name})}
+                                    onClick={() => setInfoFilme({...infoFilme, dia: e.weekday, hora: a.name, data:e.date})}
                                 >
                                     {a.name}
                                 </button>

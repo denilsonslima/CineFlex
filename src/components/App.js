@@ -4,6 +4,7 @@ import Assentos from "../pages/Assentos";
 import NavBar from "../NavBar";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useState } from "react";
+import Confirmacao from "../pages/Confirmacao";
 
 export default function App() {
   const [infoFilme, setInfoFilme] = useState("")
@@ -15,7 +16,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<TelaInicial setInfoFilme={setInfoFilme}/>}></Route>
           <Route path="/sessoes/:idFilme" element={<Horario infoFilme={infoFilme} setInfoFilme={setInfoFilme}/>}></Route>
-          <Route path="/assentos/:idSessao" element={<Assentos infoFilme={infoFilme}/>}></Route>
+          <Route path="/assentos/:idSessao" element={<Assentos infoFilme={infoFilme} setInfoFilme={setInfoFilme}/>}></Route>
+          <Route path="/sucesso" element={<Confirmacao infoFilme={infoFilme}/>}/>
         </Routes>
       </BrowserRouter>
     </div>

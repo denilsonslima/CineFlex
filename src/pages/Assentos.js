@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import { Link, useParams } from "react-router-dom"
 
-export default function Assentos({ infoFilme }) {
+export default function Assentos({ infoFilme, setInfoFilme }) {
     const [imagem, setImagem] = useState(null)
     const { idSessao } = useParams()
+    const [pegarCPF, setPegarCPF] = useState('');
+    const [nome, setNome] = useState('');
+    const [cadeiras, setCadeiras] = useState([])
 
     useEffect(() => {
         const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`
@@ -21,10 +24,12 @@ export default function Assentos({ infoFilme }) {
         )
     }
 
-    if (imagem !== null) {
-        console.log(imagem)
+    function verificar(e){
+        const clicado = cadeiras.includes(e)
+        if(!clicado){
+            setCadeiras([...cadeiras, e])
+        }  
     }
-
 
     return (
         <Main>
@@ -35,7 +40,9 @@ export default function Assentos({ infoFilme }) {
                 {imagem.seats.map(e => (
                     <button
                         key={e.id}
-                        className={e.isAvailable ? "disponivel" : "indisponivel"}
+                        className={cadeiras.includes(e.name) ? "clicado" : e.isAvailable ? "disponivel" : "indisponivel"}
+                        disabled={e.isAvailable  === false}
+                        onClick={() => verificar(e.name)}
                     >
                         {e.name}
                     </button>
@@ -57,10 +64,30 @@ export default function Assentos({ infoFilme }) {
             </Select>
             <Inputs>
                 <p>Nome do comprador:</p>
-                <input type="text" placeholder="Digite seu nome..." name="primeiroInput" />
+                <input
+                    type="text"
+                    placeholder="Digite seu nome..."
+                    value={nome}
+                    onChange={event => setNome(event.target.value)}
+                />
                 <p>CPF do comprador:</p>
-                <input type="text" placeholder="Digite seu CPF..." />
+                <input
+                    maxLength={11}
+                    type="text"
+                    value={pegarCPF}
+                    onChange={event => setPegarCPF(event.target.value)}
+                    placeholder="Digite seu CPF..."
+                />
             </Inputs>
+            <Link
+                className="h"
+                to={"/sucesso"}
+                onClick={() => setInfoFilme({...infoFilme, pessoa: nome, cpf: pegarCPF, assento: cadeiras})}
+            >
+                <Enviar>
+                    Reservar assento(s)
+                </Enviar>
+            </Link>
             <Footer>
                 <div>
                     <img src={infoFilme.url} alt="Imagem Filme" />
@@ -78,7 +105,10 @@ const Main = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 125px;
+    padding-bottom: 117px;
+    .h {
+        text-decoration: none;
+    }
 `
 
 const Titulo = styled.div`
@@ -123,6 +153,11 @@ const Botoes = styled.div`
     button.indisponivel {
         background: #FBE192;
         border: 1px solid #F7C52B;
+    }
+
+    button.clicado {
+        background: #1AAE9E;
+        border: 1px solid #0E7D71;
     }
 `
 
@@ -232,18 +267,44 @@ const Footer = styled.footer`
         }
     }
 
-    h4 {
-        font-family: 'Roboto';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 26px;
-        line-height: 30px;
-        color: #293845;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        /* display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;  */
+    ul {
+        h4 {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 26px;
+            line-height: 30px;
+            color: #293845;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
+
+    @media (max-width: 450px){
+        ul h4 {
+            max-width: 260px;
+        }
+    }
+`
+
+const Enviar = styled.button`
+    width: 225px;
+    height: 42px;
+    margin-top: 57px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    letter-spacing: 0.04em;
+    color: #FFFFFF;
+    background: #E8833A;
+    border-radius: 3px;
+    border: none;
+    margin-bottom: 30px;
 `

@@ -2,7 +2,7 @@ import styled from "styled-components"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Loading from "../components/Loading";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function TelaInicial({setInfoFilme}) {
     const [imagem, setImagem] = useState(null)
