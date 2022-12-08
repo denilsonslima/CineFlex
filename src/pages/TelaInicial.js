@@ -32,7 +32,7 @@ export default function TelaInicial({setInfoFilme}) {
                         to={`/sessoes/${e.id}`}
                         onClick={() => setInfoFilme({name: e.title, url: e.posterURL})}
                     >
-                        <li>
+                        <li data-test="movie">
                             <img src={e.posterURL} alt={e.title} />
                         </li>
                     </Link>

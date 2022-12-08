@@ -31,16 +31,22 @@ export default function Confirmacao({ infoFilme }) {
                 <h2>Pedido feito <br /> com sucesso!</h2>
             </div>
             <Corpo>
-                <h3 className="p">Filme e sessão</h3>
-                <p>{infoFilme.name}</p>
-                <p>{`${infoFilme.data}  ${infoFilme.hora}`}</p>
-                <h3>Ingressos</h3>
-                {infoFilme.assento.map(e =>
-                    <p key={e}>{`Assento: ${e}`}</p>
-                )}
-                <h3>Comprador</h3>
-                <p>{`Nome: ${infoFilme.pessoa}`}</p>
-                <p>{`CPF: ${infoFilme.cpf}`}</p>
+                <section data-test="movie-info">
+                    <h3 className="p">Filme e sessão</h3>
+                    <p>{infoFilme.name}</p>
+                    <p>{`${infoFilme.data}  ${infoFilme.hora}`}</p>
+                </section>
+                <section data-test="seats-info" >
+                    <h3>Ingressos</h3>
+                    {infoFilme.assento.map(e =>
+                        <p key={e}>{`Assento: ${e}`}</p>
+                    )}
+                </section>
+                <section data-test="client-info">
+                    <h3>Comprador</h3>
+                    <p>{`Nome: ${infoFilme.pessoa}`}</p>
+                    <p>{`CPF: ${infoFilme.cpf}`}</p>
+                </section>
             </Corpo>
             <Link className="o" to={"/"}>
                 <Enviar>Voltar pra Home</Enviar>

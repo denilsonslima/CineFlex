@@ -25,12 +25,13 @@ export default function Horario({ infoFilme, setInfoFilme }) {
         <Main>
             <div className="horario">Selecione o horário</div>
             {imagem.map(e => (
-                <section key={e.id} >
+                <section key={e.id}  data-test="movie-day">
                     <h3>{`${e.weekday} - ${e.date}`}</h3>
                     <div className="ha">
                         {e.showtimes.map(a =>
                             <Link key={a.id} className="hora" to={`/assentos/${a.id}`}>
                                 <button
+                                    data-test="showtime"
                                     onClick={() => setInfoFilme({...infoFilme, dia: e.weekday, hora: a.name, data:e.date})}
                                 >
                                     {a.name}
@@ -40,7 +41,7 @@ export default function Horario({ infoFilme, setInfoFilme }) {
                     </div>
                 </section>
             ))}
-            <footer>
+            <footer data-test="footer">
                 <div>
                     <img src={infoFilme.url} alt="Imagem Filme" />
                 </div>

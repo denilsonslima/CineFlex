@@ -49,6 +49,7 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
                 {imagem.seats.map(e => (
                     <button
                         key={e.id}
+                        data-test="seat"
                         className={cadeiras.includes(e.name) && e.isAvailable ? "clicado" : e.isAvailable ? "disponivel" : "indisponivel"}
                         onClick={() => verificar(e.name, e.isAvailable, e.id)}
                     >
@@ -74,6 +75,7 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
                 <p>Nome do comprador:</p>
                 <input
                     type="text"
+                    data-test="client-name" 
                     placeholder="Digite seu nome..."
                     value={nome}
                     onChange={event => setNome(event.target.value)}
@@ -81,6 +83,7 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
                 <p>CPF do comprador:</p>
                 <input
                     maxLength={11}
+                    data-test="client-cpf"
                     type="text"
                     value={pegarCPF}
                     onChange={event => setPegarCPF(event.target.value)}
@@ -89,6 +92,7 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
             </Inputs>
             <Link
                 className="h"
+                data-test="book-seat-btn" 
                 to={"/sucesso"}
                 onClick={() => setInfoFilme({...infoFilme, pessoa: nome, cpf: pegarCPF, assento: cadeiras, id: id})}
             >
@@ -96,7 +100,7 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
                     Reservar assento(s)
                 </Enviar>
             </Link>
-            <Footer>
+            <Footer data-test="footer">
                 <div>
                     <img src={infoFilme.url} alt="Imagem Filme" />
                 </div>
