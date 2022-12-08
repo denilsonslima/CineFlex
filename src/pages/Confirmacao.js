@@ -48,7 +48,7 @@ export default function Confirmacao({ infoFilme }) {
                     <p>{`CPF: ${infoFilme.cpf}`}</p>
                 </section>
             </Corpo>
-            <Link className="o" to={"/"}>
+            <Link data-test="go-home-btn" className="o" to={"/"}>
                 <Enviar>Voltar pra Home</Enviar>
             </Link>
         </Main>
