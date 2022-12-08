@@ -10,6 +10,7 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
     const [pegarCPF, setPegarCPF] = useState('');
     const [nome, setNome] = useState('');
     const [cadeiras, setCadeiras] = useState([])
+    const [id, setId] = useState([])
 
     useEffect(() => {
         const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`
@@ -24,11 +25,19 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
         )
     }
 
-    function verificar(e){
+    function verificar(e, c, f){
         const clicado = cadeiras.includes(e)
-        if(!clicado){
+        if(!clicado && c){
             setCadeiras([...cadeiras, e])
-        }  
+            setId([...id, f])
+        } else {
+            setCadeiras(cadeiras.filter(a => a !== e))
+            setId(id.filter(a => a !== f))
+        }
+
+        if(c === false){
+            alert("Esse assento não está disponível")
+        }
     }
 
     return (
@@ -40,9 +49,8 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
                 {imagem.seats.map(e => (
                     <button
                         key={e.id}
-                        className={cadeiras.includes(e.name) ? "clicado" : e.isAvailable ? "disponivel" : "indisponivel"}
-                        disabled={e.isAvailable  === false}
-                        onClick={() => verificar(e.name)}
+                        className={cadeiras.includes(e.name) && e.isAvailable ? "clicado" : e.isAvailable ? "disponivel" : "indisponivel"}
+                        onClick={() => verificar(e.name, e.isAvailable, e.id)}
                     >
                         {e.name}
                     </button>
@@ -82,7 +90,7 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
             <Link
                 className="h"
                 to={"/sucesso"}
-                onClick={() => setInfoFilme({...infoFilme, pessoa: nome, cpf: pegarCPF, assento: cadeiras})}
+                onClick={() => setInfoFilme({...infoFilme, pessoa: nome, cpf: pegarCPF, assento: cadeiras, id: id})}
             >
                 <Enviar>
                     Reservar assento(s)

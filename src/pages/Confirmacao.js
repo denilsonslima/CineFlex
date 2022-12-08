@@ -1,24 +1,30 @@
 import styled from "styled-components"
-// import axios from "axios";
-// import { useEffect, useState } from "react";
-// import Loading from "../components/Loading";
-import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Loading from "../components/Loading";
+import { Link } from "react-router-dom";
 
 export default function Confirmacao({ infoFilme }) {
-    // const [confirmacao, setConfirmacao] = useState(null)
+    const [confirmacao, setConfirmacao] = useState(null)
+    const dados = {
+        ids: infoFilme.id,
+        name: infoFilme.pessoa,
+        cpf: infoFilme.cpf
+    }
 
-    // useEffect(() => {
-    //     const url = `https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many`
-    //     const promisse = axios.get(url)
-    //     promisse.then(e => setConfirmacao(e.data))
-    //     promisse.catch(res => console.log(res))
-    // }, [])
+    useEffect(() => {
+        const url = `https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many`
+        const promisse = axios.post(url, dados)
+        promisse.then(e => setConfirmacao(e.data))
+        promisse.catch(res => console.log(res))
+    }, [])
 
-    // if (confirmacao === null) {
-    //     return (
-    //         <Loading />
-    //     )
-    // }
+    if (confirmacao === null) {
+        return (
+            <Loading />
+        )
+    }
+
     return (
         <Main>
             <div>
@@ -45,7 +51,7 @@ export default function Confirmacao({ infoFilme }) {
 
 
 const Main = styled.div`
-    padding-bottom: 190px;
+    padding-bottom: 30px;
     & div {
         width: 100%;
         height: 110px;
@@ -65,7 +71,6 @@ const Main = styled.div`
     .o {
         text-decoration: none;
     }
-
 `
 
 const Corpo = styled.section`   
@@ -111,6 +116,5 @@ const Enviar = styled.button`
     background: #E8833A;
     border-radius: 3px;
     border: none;
-    margin-left: calc(50vw - 225px/2)
-    
+    margin-left: calc(50vw - 225px/2);
 `
