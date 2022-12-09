@@ -2,7 +2,7 @@ import styled from "styled-components"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Loading from "../components/Loading";
-import { Link, useParams } from "react-router-dom"
+import {useParams, useNavigate } from "react-router-dom"
 
 export default function Assentos({ infoFilme, setInfoFilme }) {
     const [imagem, setImagem] = useState(null)
@@ -11,6 +11,7 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
     const [nome, setNome] = useState('');
     const [cadeiras, setCadeiras] = useState([])
     const [id, setId] = useState([])
+    const navigate = useNavigate();
 
     useEffect(() => {
         const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`
@@ -25,9 +26,9 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
         )
     }
 
-    function verificar(e, c, f){
+    function verificar(e, c, f) {
         const clicado = cadeiras.includes(e)
-        if(!clicado && c){
+        if (!clicado && c) {
             setCadeiras([...cadeiras, e])
             setId([...id, f])
         } else {
@@ -35,8 +36,15 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
             setId(id.filter(a => a !== f))
         }
 
-        if(c === false){
+        if (c === false) {
             alert("Esse assento não está disponível")
+        }
+    }
+
+    function teste(){
+        setInfoFilme({ ...infoFilme, pessoa: nome, cpf: pegarCPF, assento: cadeiras, id: id })
+        if(cadeiras.length !== 0 && nome !== "" && pegarCPF !== ""){
+            navigate("/sucesso")
         }
     }
 
@@ -75,7 +83,7 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
                 <p>Nome do comprador:</p>
                 <input
                     type="text"
-                    data-test="client-name" 
+                    data-test="client-name"
                     placeholder="Digite seu nome..."
                     value={nome}
                     onChange={event => setNome(event.target.value)}
@@ -90,16 +98,12 @@ export default function Assentos({ infoFilme, setInfoFilme }) {
                     placeholder="Digite seu CPF..."
                 />
             </Inputs>
-            <Link
-                className="h"
-                data-test="book-seat-btn" 
-                to={"/sucesso"}
-                onClick={() => setInfoFilme({...infoFilme, pessoa: nome, cpf: pegarCPF, assento: cadeiras, id: id})}
+            <Enviar
+                data-test="book-seat-btn"
+                onClick={teste}
             >
-                <Enviar>
-                    Reservar assento(s)
-                </Enviar>
-            </Link>
+                Reservar assento(s)
+            </Enviar>
             <Footer data-test="footer">
                 <div>
                     <img src={infoFilme.url} alt="Imagem Filme" />
